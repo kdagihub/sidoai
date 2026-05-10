@@ -1,8 +1,8 @@
 # Images Docker → Hub
 
-## Une commande (build + push des 3 images)
+## Une commande (build + push **backend** + **web**)
 
-À lancer depuis la racine **`sidoai/`** (ce dossier doit contenir `docker-bake.hcl`) :
+À lancer depuis la racine **`sidoai/`** :
 
 ```bash
 docker buildx bake --push
@@ -17,7 +17,20 @@ REGISTRY=ciacems/sido TAG=1.0.0 docker buildx bake --push
 Builder distant (ex.) :
 
 ```bash
-docker buildx bake --builder ton-builder-cloud --push
+docker buildx bake --builder cloud-ciacems-ciacems-builder --push
+```
+
+### Model server (pas dans le bake par défaut)
+
+L’image **model** (Torch/CUDA) est **très lourde** et fait souvent échouer les builders cloud (**no space left**).  
+**Recommandation** : au déploiement, utiliser l’image officielle **`onyxdotapp/onyx-model-server`** avec le même **`IMAGE_TAG`** que tu utilises pour le reste (ex. `latest`).
+
+Dans Dokploy / `.env` : **ne pas** définir `ONYX_MODEL_SERVER_IMAGE` pointant vers `ciacems/sido` si tu n’as pas poussé ce tag — laisse le défaut du compose.
+
+Build manuel du model (machine ou builder avec **assez d’espace disque**) :
+
+```bash
+docker buildx bake model --push
 ```
 
 ## Code interpreter (pas dans ce repo)
@@ -28,20 +41,20 @@ Optionnel — recopier l’image officielle sous ton dépôt :
 docker pull onyxdotapp/code-interpreter:latest && docker tag onyxdotapp/code-interpreter:latest ciacems/sido:code-interpreter-latest && docker push ciacems/sido:code-interpreter-latest
 ```
 
+Ou laisser le défaut `onyxdotapp/code-interpreter` (sans `CODE_INTERPRETER_IMAGE`).
+
 ## Lite ou pas ?
 
-**Non : ces commandes ne lancent rien du tout** (pas de conteneur). Elles ne font que **construire et pousser** des images.
-
-Le mode **Onyx Lite**, c’est au **démarrage** de la stack : fichier  
-`docker-compose.yml` **+** `docker-compose.onyx-lite.yml` (profils, `DISABLE_VECTOR_DB`, etc.).  
-**Les mêmes images** servent pour Lite ou stack complète.
+**Non** : le bake ne lance aucun conteneur. Le mode **Lite** se choisit au **run** (`docker-compose.onyx-lite.yml`).
 
 ## Dokploy
 
-**Un seul** champ *Compose Path* :  
-`deployment/docker_compose/docker-compose.dokploy-entry.yml`  
-(ce fichier **inclut** déjà `prod-no-letsencrypt` + `dokploy` ; il faut Docker Compose **v2.24+** côté serveur).
+**Compose Path** : `deployment/docker_compose/docker-compose.dokploy-entry.yml` (Compose **v2.24+** pour `include`).
 
-Lite au run : ajoute l’overlay `docker-compose.onyx-lite.yml` seulement si tu l’intègres toi-même (Dokploy n’a souvent qu’un seul fichier — dans ce cas on peut fusionner ou documenter un second entry plus tard).
+Variables : `deployment/docker_compose/env.template`.
 
-Variables images : voir `deployment/docker_compose/env.template`.
+### Secret
+
+```bash
+openssl rand -hex 32
+```
