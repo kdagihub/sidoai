@@ -91,6 +91,7 @@ from onyx.server.manage.models import SlackBotTokens
 from onyx.tracing.setup import setup_tracing
 from onyx.utils.logger import setup_logger
 from onyx.utils.variable_functionality import fetch_ee_implementation_or_noop
+from onyx.utils.variable_functionality import fetch_versioned_implementation_with_fallback
 from onyx.utils.variable_functionality import set_is_ee_based_on_env_variable
 from shared_configs.configs import DISALLOWED_SLACK_BOT_TENANT_LIST
 from shared_configs.configs import MODEL_SERVER_HOST
@@ -287,11 +288,17 @@ class SlackbotHandler:
         token: Token[str | None]
 
         # tenants that are disabled (e.g. their trial is over and haven't subscribed)
-        # for non-cloud, this will return an empty set
-        gated_tenants = fetch_ee_implementation_or_noop(
+        # for non-cloud, this will return an empty set.
+        # Use versioned fetch + fallback: LICENSE_ENFORCEMENT can enable "EE mode" without
+        # shipping ee.* or onyx.server.tenants (CE images); fetch_ee_implementation_or_noop
+        # would raise in that case.
+        def _empty_gated_tenants() -> set[str]:
+            return set()
+
+        gated_tenants = fetch_versioned_implementation_with_fallback(
             "onyx.server.tenants.product_gating",
             "get_gated_tenants",
-            set(),
+            _empty_gated_tenants,
         )()
         all_active_tenants = [
             tenant_id
@@ -1209,18 +1216,18 @@ def _check_tenant_gated(client: TenantSocketModeClient, req: SocketModeRequest) 
     from onyx.server.settings.models import ApplicationStatus
 
     # Multi-tenant path: control plane marks gated tenants in Redis
-    is_gated: bool = fetch_ee_implementation_or_noop(
+    is_gated: bool = fetch_versioned_implementation_with_fallback(
         "onyx.server.tenants.product_gating",
         "is_tenant_gated",
-        False,
+        lambda _tenant_id: False,
     )(get_current_tenant_id())
 
     # Self-hosted path: check license metadata cache
     if not is_gated:
-        get_cached_metadata = fetch_ee_implementation_or_noop(
+        get_cached_metadata = fetch_versioned_implementation_with_fallback(
             "onyx.db.license",
             "get_cached_license_metadata",
-            None,
+            lambda: None,
         )
         metadata = get_cached_metadata()
         if metadata is not None:
