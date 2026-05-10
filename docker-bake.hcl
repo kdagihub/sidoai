@@ -1,109 +1,34 @@
-group "default" {
-  targets = ["backend", "model-server", "web"]
-}
+# Usage (depuis la racine sidoai/) :
+#   docker buildx bake --push
+# Avec registre / tag personnalisés :
+#   REGISTRY=ciacems/sido TAG=1.0.0 docker buildx bake --push
 
-variable "BACKEND_REPOSITORY" {
-  default = "onyxdotapp/onyx-backend"
-}
-
-variable "WEB_SERVER_REPOSITORY" {
-  default = "onyxdotapp/onyx-web-server"
-}
-
-variable "MODEL_SERVER_REPOSITORY" {
-  default = "onyxdotapp/onyx-model-server"
-}
-
-variable "INTEGRATION_REPOSITORY" {
-  default = "onyxdotapp/onyx-integration"
-}
-
-variable "CLI_REPOSITORY" {
-  default = "onyxdotapp/onyx-cli"
-}
-
-variable "DEVCONTAINER_REPOSITORY" {
-  default = "onyxdotapp/onyx-devcontainer"
+variable "REGISTRY" {
+  default = "ciacems/sido"
 }
 
 variable "TAG" {
   default = "latest"
 }
 
+group "default" {
+  targets = ["backend", "web", "model"]
+}
+
 target "backend" {
   context    = "backend"
   dockerfile = "Dockerfile"
-
-  cache-from = [
-    "type=registry,ref=${BACKEND_REPOSITORY}:latest",
-    "type=registry,ref=${BACKEND_REPOSITORY}:edge",
-  ]
-  cache-to   = ["type=inline"]
-
-  tags      = ["${BACKEND_REPOSITORY}:${TAG}"]
+  tags       = ["${REGISTRY}:backend-${TAG}"]
 }
 
 target "web" {
   context    = "web"
   dockerfile = "Dockerfile"
-
-  cache-from = [
-    "type=registry,ref=${WEB_SERVER_REPOSITORY}:latest",
-    "type=registry,ref=${WEB_SERVER_REPOSITORY}:edge",
-  ]
-  cache-to   = ["type=inline"]
-
-  tags      = ["${WEB_SERVER_REPOSITORY}:${TAG}"]
+  tags       = ["${REGISTRY}:web-${TAG}"]
 }
 
-target "model-server" {
-  context = "backend"
-
-  dockerfile = "Dockerfile.model_server"
-
-  cache-from = [
-    "type=registry,ref=${MODEL_SERVER_REPOSITORY}:latest",
-    "type=registry,ref=${MODEL_SERVER_REPOSITORY}:edge",
-  ]
-  cache-to   = ["type=inline"]
-
-  tags      = ["${MODEL_SERVER_REPOSITORY}:${TAG}"]
-}
-
-target "integration" {
+target "model" {
   context    = "backend"
-  dockerfile = "tests/integration/Dockerfile"
-
-  // Provide the base image via build context from the backend target
-  contexts = {
-    base = "target:backend"
-  }
-
-  tags      = ["${INTEGRATION_REPOSITORY}:${TAG}"]
-}
-
-target "cli" {
-  context    = "cli"
-  dockerfile = "Dockerfile"
-
-  cache-from = [
-    "type=registry,ref=${CLI_REPOSITORY}:latest",
-    "type=registry,ref=${CLI_REPOSITORY}:edge",
-  ]
-  cache-to   = ["type=inline"]
-
-  tags      = ["${CLI_REPOSITORY}:${TAG}"]
-}
-
-target "devcontainer" {
-  context    = ".devcontainer"
-  dockerfile = "Dockerfile"
-
-  cache-from = [
-    "type=registry,ref=${DEVCONTAINER_REPOSITORY}:latest",
-    "type=registry,ref=${DEVCONTAINER_REPOSITORY}:edge",
-  ]
-  cache-to   = ["type=inline"]
-
-  tags      = ["${DEVCONTAINER_REPOSITORY}:${TAG}"]
+  dockerfile = "Dockerfile.model_server"
+  tags       = ["${REGISTRY}:model-${TAG}"]
 }

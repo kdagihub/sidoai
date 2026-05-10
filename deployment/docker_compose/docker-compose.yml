@@ -546,7 +546,7 @@ services:
       retries: 3
 
   code-interpreter:
-    image: onyxdotapp/code-interpreter:${CODE_INTERPRETER_IMAGE_TAG:-latest}
+    image: ${CODE_INTERPRETER_IMAGE:-onyxdotapp/code-interpreter:${CODE_INTERPRETER_IMAGE_TAG:-latest}}
     command: ["bash", "./entrypoint.sh", "code-interpreter-api"]
     restart: unless-stopped
     env_file:

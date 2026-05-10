@@ -1,0 +1,8 @@
+# Publie le port 443 du service nginx (TLS terminé dans le conteneur avec data/sslcerts).
+# Usage :
+#   docker compose -f docker-compose.prod-no-letsencrypt.yml -f docker-compose.prod-no-letsencrypt.publish-443.yml up -d
+
+services:
+  nginx:
+    ports:
+      - "443:443"
