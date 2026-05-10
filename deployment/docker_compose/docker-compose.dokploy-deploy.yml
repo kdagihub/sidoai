@@ -1,6 +1,7 @@
 # Fusion prod-no-letsencrypt + dokploy, sans directive `include`.
 # Dokploy valide les domaines sur ce fichier seul : il ne voit pas les services dans docker-compose.dokploy-entry.yml.
 # Compose Path Dokploy : deployment/docker_compose/docker-compose.dokploy-deploy.yml
+# Ne pas régénérer avec `docker compose config` sans préserver ${ONYX_*}: sinon les images sont résolues en dur (onyxdotapp/...).
 #
 name: sido
 services:
@@ -51,7 +52,7 @@ services:
       VESPA_HOST: index
     extra_hosts:
       - host.docker.internal=host-gateway
-    image: onyxdotapp/onyx-backend:latest
+    image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}
     logging:
       driver: json-file
       options:
@@ -114,7 +115,7 @@ services:
       VESPA_HOST: index
     extra_hosts:
       - host.docker.internal=host-gateway
-    image: onyxdotapp/onyx-backend:latest
+    image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}
     logging:
       driver: json-file
       options:
@@ -150,7 +151,7 @@ services:
       - bash
       - ./entrypoint.sh
       - code-interpreter-api
-    image: onyxdotapp/code-interpreter:latest
+    image: ${CODE_INTERPRETER_IMAGE:-onyxdotapp/code-interpreter:${CODE_INTERPRETER_IMAGE_TAG:-latest}}
     networks:
       default: null
     restart: unless-stopped
@@ -205,7 +206,7 @@ services:
       LOG_LEVEL: info
       MIN_THREADS_ML_MODELS: ""
       VESPA_SEARCHER_THREADS: "1"
-    image: onyxdotapp/onyx-model-server:latest
+    image: ${ONYX_MODEL_SERVER_IMAGE:-onyxdotapp/onyx-model-server:${IMAGE_TAG:-latest}}
     logging:
       driver: json-file
       options:
@@ -240,7 +241,7 @@ services:
     environment:
       LOG_LEVEL: info
       MIN_THREADS_ML_MODELS: ""
-    image: onyxdotapp/onyx-model-server:latest
+    image: ${ONYX_MODEL_SERVER_IMAGE:-onyxdotapp/onyx-model-server:${IMAGE_TAG:-latest}}
     logging:
       driver: json-file
       options:
@@ -380,7 +381,7 @@ services:
         required: true
     environment:
       INTERNAL_URL: http://api_server:8080
-    image: onyxdotapp/onyx-web-server:latest
+    image: ${ONYX_WEB_SERVER_IMAGE:-onyxdotapp/onyx-web-server:${IMAGE_TAG:-latest}}
     logging:
       driver: json-file
       options:
