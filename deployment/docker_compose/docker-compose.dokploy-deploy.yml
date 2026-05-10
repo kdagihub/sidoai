@@ -2,9 +2,9 @@
 # Dokploy valide les domaines sur ce fichier seul : il ne voit pas les services dans docker-compose.dokploy-entry.yml.
 # Compose Path Dokploy : deployment/docker_compose/docker-compose.dokploy-deploy.yml
 # Ne pas régénérer avec `docker compose config` sans préserver ${ONYX_*}: sinon les images sont résolues en dur (onyxdotapp/...).
-# AUTH : défaut `basic` (API démarre sans IdP). Pour OIDC dans Dokploy : AUTH_TYPE=oidc +
-# OPENID_CONFIG_URL (https://…/.well-known/openid-configuration), OAUTH_CLIENT_ID,
-# OAUTH_CLIENT_SECRET, WEB_DOMAIN=https://sido.monajent.com
+# AUTH : `basic` figé ici pour éviter qu’un AUTH_TYPE=oidc injecté côté Dokploy (sans
+# OPENID_CONFIG_URL) fasse crasher l’API. Pour OIDC : retirez cette ligne du compose
+# ou surchargez via overlay et renseignez OPENID_CONFIG_URL + OAUTH_* .
 #
 name: sido
 services:
@@ -33,7 +33,7 @@ services:
         condition: service_healthy
         required: true
     environment:
-      AUTH_TYPE: ${AUTH_TYPE:-basic}
+      AUTH_TYPE: basic
       AWS_ACCESS_KEY_ID: ""
       AWS_REGION_NAME: ""
       AWS_SECRET_ACCESS_KEY: ""
@@ -94,7 +94,7 @@ services:
         condition: service_healthy
         required: true
     environment:
-      AUTH_TYPE: ${AUTH_TYPE:-basic}
+      AUTH_TYPE: basic
       AWS_ACCESS_KEY_ID: ""
       AWS_REGION_NAME: ""
       AWS_SECRET_ACCESS_KEY: ""

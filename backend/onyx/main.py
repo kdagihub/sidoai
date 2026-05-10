@@ -526,7 +526,26 @@ def get_application(lifespan_override: Lifespan | None = None) -> FastAPI:
     include_router_with_global_prefix_prepended(application, pat_router)
     include_router_with_global_prefix_prepended(application, captcha_router)
 
-    if AUTH_TYPE == AuthType.BASIC or AUTH_TYPE == AuthType.CLOUD:
+    # OIDC requires a full discovery URL; deployment tools often set AUTH_TYPE=oidc
+    # without OPENID_CONFIG_URL — OpenID() then crashes during import. Fall back to
+    # basic auth routes so the API stays up (compose/env overrides cannot be relied on).
+    _oidc_url_ok = bool(
+        OPENID_CONFIG_URL
+        and OPENID_CONFIG_URL.strip().startswith(("http://", "https://"))
+    )
+    _oidc_misconfigured = AUTH_TYPE == AuthType.OIDC and not _oidc_url_ok
+    if _oidc_misconfigured:
+        logger.error(
+            "AUTH_TYPE=oidc but OPENID_CONFIG_URL is missing or invalid (must start with "
+            "http:// or https://, e.g. https://issuer/.well-known/openid-configuration). "
+            "Using basic email/password auth routes until fixed."
+        )
+
+    if (
+        AUTH_TYPE == AuthType.BASIC
+        or AUTH_TYPE == AuthType.CLOUD
+        or _oidc_misconfigured
+    ):
         include_auth_router_with_prefix(
             application,
             fastapi_users.get_auth_router(auth_backend),
@@ -590,7 +609,7 @@ def get_application(lifespan_override: Lifespan | None = None) -> FastAPI:
                 prefix="/auth",
             )
 
-    if AUTH_TYPE == AuthType.OIDC:
+    if AUTH_TYPE == AuthType.OIDC and _oidc_url_ok:
         # Ensure we request offline_access for refresh tokens
         try:
             oidc_scopes = list(OIDC_SCOPE_OVERRIDE or BASE_SCOPES)
