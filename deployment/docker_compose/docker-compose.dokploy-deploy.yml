@@ -17,9 +17,6 @@ services:
       cache:
         condition: service_started
         required: true
-      index:
-        condition: service_started
-        required: true
       inference_model_server:
         condition: service_started
         required: true
@@ -39,7 +36,9 @@ services:
       AWS_SECRET_ACCESS_KEY: ""
       CODE_INTERPRETER_BASE_URL: http://code-interpreter:8000
       ENABLE_OPENSEARCH_INDEXING_FOR_ONYX: "true"
+      ENABLE_OPENSEARCH_RETRIEVAL_FOR_ONYX: "true"
       MODEL_SERVER_HOST: inference_model_server
+      ONYX_DISABLE_VESPA: "true"
       OPENSEARCH_ADMIN_PASSWORD: StrongPassword123!
       OPENSEARCH_HOST: opensearch
       PERSISTENT_DOCUMENT_STORAGE_PATH: /app/file-system
@@ -49,7 +48,6 @@ services:
       S3_AWS_SECRET_ACCESS_KEY: minioadmin
       S3_ENDPOINT_URL: http://minio:9000
       USE_IAM_AUTH: ""
-      VESPA_HOST: index
     extra_hosts:
       - host.docker.internal=host-gateway
     image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}
@@ -80,9 +78,6 @@ services:
       cache:
         condition: service_started
         required: true
-      index:
-        condition: service_started
-        required: true
       indexing_model_server:
         condition: service_started
         required: true
@@ -101,8 +96,10 @@ services:
       AWS_REGION_NAME: ""
       AWS_SECRET_ACCESS_KEY: ""
       ENABLE_OPENSEARCH_INDEXING_FOR_ONYX: "true"
+      ENABLE_OPENSEARCH_RETRIEVAL_FOR_ONYX: "true"
       INDEXING_MODEL_SERVER_HOST: indexing_model_server
       MODEL_SERVER_HOST: inference_model_server
+      ONYX_DISABLE_VESPA: "true"
       OPENSEARCH_ADMIN_PASSWORD: StrongPassword123!
       OPENSEARCH_HOST: opensearch
       PERSISTENT_DOCUMENT_STORAGE_PATH: /app/file-system
@@ -112,7 +109,6 @@ services:
       S3_AWS_SECRET_ACCESS_KEY: minioadmin
       S3_ENDPOINT_URL: http://minio:9000
       USE_IAM_AUTH: ""
-      VESPA_HOST: index
     extra_hosts:
       - host.docker.internal=host-gateway
     image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}
@@ -161,7 +157,11 @@ services:
         source: /var/run/docker.sock
         target: /var/run/docker.sock
         bind: {}
+  # Vespa est lourd (RAM/CPU) et lent au boot ; avec OpenSearch activé, ONYX_DISABLE_VESPA
+  # évite d’en dépendre. Profil optionnel : COMPOSE_PROFILES=vespa docker compose ... up
   index:
+    profiles:
+      - vespa
     environment:
       VESPA_SKIP_UPGRADE_CHECK: "true"
     image: vespaengine/vespa:8.609.39
