@@ -34,6 +34,9 @@ services:
         required: true
     environment:
       AUTH_TYPE: basic
+      # Build CE sans packages ee.* : le défaut upstream (true) active « EE mode » et
+      # fait échouer fetch_ee_implementation_or_noop sur des imports manquants.
+      LICENSE_ENFORCEMENT_ENABLED: "false"
       AWS_ACCESS_KEY_ID: ""
       AWS_REGION_NAME: ""
       AWS_SECRET_ACCESS_KEY: ""
@@ -95,6 +98,9 @@ services:
         required: true
     environment:
       AUTH_TYPE: basic
+      # Build CE sans packages ee.* : le défaut upstream (true) active « EE mode » et
+      # fait échouer fetch_ee_implementation_or_noop sur des imports manquants.
+      LICENSE_ENFORCEMENT_ENABLED: "false"
       AWS_ACCESS_KEY_ID: ""
       AWS_REGION_NAME: ""
       AWS_SECRET_ACCESS_KEY: ""

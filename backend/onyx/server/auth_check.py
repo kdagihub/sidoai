@@ -11,7 +11,7 @@ from onyx.auth.users import current_user
 from onyx.auth.users import current_user_from_websocket
 from onyx.auth.users import current_user_with_expired_token
 from onyx.configs.app_configs import APP_API_PREFIX
-from onyx.utils.variable_functionality import fetch_ee_implementation_or_noop
+from onyx.utils.variable_functionality import fetch_versioned_implementation_with_fallback
 
 PUBLIC_ENDPOINT_SPECS = [
     # built-in documentation functions
@@ -98,6 +98,19 @@ def _is_require_permission_dependency(fn: object) -> bool:
     return bool(getattr(fn, "_is_require_permission", False))
 
 
+async def _fallback_control_plane_dep() -> None:
+    """CE / misconfigured EE: tenant control-plane dep absent."""
+    yield
+
+
+async def _fallback_current_cloud_superuser() -> None:
+    yield
+
+
+async def _fallback_verify_scim_token() -> None:
+    yield
+
+
 def check_router_auth(
     application: FastAPI,
     public_endpoint_specs: list[tuple[str, set[str]]] = PUBLIC_ENDPOINT_SPECS,
@@ -107,14 +120,20 @@ def check_router_auth(
     (2) are explicitly marked as a public endpoint
     """
 
-    control_plane_dep = fetch_ee_implementation_or_noop(
-        "onyx.server.tenants.access", "control_plane_dep"
+    control_plane_dep = fetch_versioned_implementation_with_fallback(
+        "onyx.server.tenants.access",
+        "control_plane_dep",
+        _fallback_control_plane_dep,
     )
-    current_cloud_superuser = fetch_ee_implementation_or_noop(
-        "onyx.auth.users", "current_cloud_superuser"
+    current_cloud_superuser = fetch_versioned_implementation_with_fallback(
+        "onyx.auth.users",
+        "current_cloud_superuser",
+        _fallback_current_cloud_superuser,
     )
-    verify_scim_token = fetch_ee_implementation_or_noop(
-        "onyx.server.scim.auth", "verify_scim_token"
+    verify_scim_token = fetch_versioned_implementation_with_fallback(
+        "onyx.server.scim.auth",
+        "verify_scim_token",
+        _fallback_verify_scim_token,
     )
 
     for route in application.routes:
