@@ -353,14 +353,30 @@ services:
     command:
       - -c
       - max_connections=250
+    # Même identifiants que l’app (env Dokploy / .env). Sans ça, Postgres crée seulement
+    # l’utilisateur par défaut alors que le healthcheck pouvait viser un autre POSTGRES_USER
+    # interpolé côté hôte → pg_isready en échec permanent (unhealthy).
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    # CMD + interpolation Compose (mêmes défauts que `environment`) : évite CMD-SHELL et $$ mal échappés.
     healthcheck:
       test:
-        - CMD-SHELL
-        - pg_isready -U $${POSTGRES_USER:-postgres}
+        [
+          "CMD",
+          "pg_isready",
+          "-h",
+          "localhost",
+          "-U",
+          "${POSTGRES_USER:-postgres}",
+          "-d",
+          "${POSTGRES_DB:-postgres}",
+        ]
       interval: 5s
       timeout: 5s
-      retries: 12
-      start_period: 25s
+      retries: 15
+      start_period: 90s
     image: postgres:15.2-alpine
     logging:
       driver: json-file
