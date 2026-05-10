@@ -312,10 +312,8 @@ services:
     depends_on:
       - api_server
       - web_server
-    ports:
-      - "80:80"
-      # Pour exposer aussi le HTTPS terminé sur Nginx (certificats dans data/sslcerts) :
-      # docker compose ... -f docker-compose.prod-no-letsencrypt.publish-443.yml
+    # Pas de ports publiés par défaut : avec Traefik/Dokploy, le proxy joint nginx sur le réseau Docker.
+    # VPS sans Traefik sur :80 → ajouter -f docker-compose.prod-no-letsencrypt.publish-80.yml
     volumes:
       - ../data/nginx:/nginx-templates:ro
       - ../data/sslcerts:/etc/nginx/sslcerts

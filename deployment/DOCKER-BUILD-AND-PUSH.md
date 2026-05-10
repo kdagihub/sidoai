@@ -51,6 +51,10 @@ Ou laisser le défaut `onyxdotapp/code-interpreter` (sans `CODE_INTERPRETER_IMAG
 
 **Compose Path** : `deployment/docker_compose/docker-compose.dokploy-entry.yml` (Compose **v2.24+** pour `include`).
 
+Si **Traefik** écoute déjà sur le port **80**, nginx **ne doit pas** mapper `80:80` sur l’hôte — c’est le cas avec la config actuelle (`prod-no-letsencrypt` sans ports nginx ; overlay Dokploy). Routage : domaine → réseau Docker → service `nginx` port **80** interne.
+
+VPS **sans** Traefik sur :80 : ajouter `-f docker-compose.prod-no-letsencrypt.publish-80.yml`.
+
 Variables : `deployment/docker_compose/env.template`.
 
 ### Secret
