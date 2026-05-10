@@ -1,3 +1,9 @@
+"""Container / Kubernetes detection.
+
+Do not name this file `platform.py`: scripts run from `onyx/utils/` put that
+dir first on sys.path, so `import platform` would load this file instead of
+the stdlib and break `uuid` (e.g. AttributeError: no attribute 'system').
+"""
 import os
 import warnings
 

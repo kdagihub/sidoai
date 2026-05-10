@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 import psutil
 
 from onyx.utils.logger import setup_logger
-from onyx.utils.platform import is_running_in_container
+from onyx.utils.runtime_env import is_running_in_container
 
 # Regular application logger
 logger = setup_logger()
