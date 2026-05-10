@@ -49,7 +49,11 @@ Ou laisser le défaut `onyxdotapp/code-interpreter` (sans `CODE_INTERPRETER_IMAG
 
 ## Dokploy
 
-**Compose Path** : `deployment/docker_compose/docker-compose.dokploy-entry.yml` (Compose **v2.24+** pour `include`).
+**Compose Path** : **`deployment/docker_compose/docker-compose.dokploy-deploy.yml`** (fichier fusionné **sans** `include`).
+
+Ne pas utiliser `docker-compose.dokploy-entry.yml` dans Dokploy : le validateur des domaines ne résout pas `include`, d’où *« service nginx does not exist »*. Le fichier `dokploy-deploy.yml` expose bien tous les services (dont `nginx`).
+
+Pour la ligne de commande locale avec `include`, garder `docker-compose.dokploy-entry.yml`.
 
 Si **Traefik** écoute déjà sur le port **80**, nginx **ne doit pas** mapper `80:80` sur l’hôte — c’est le cas avec la config actuelle (`prod-no-letsencrypt` sans ports nginx ; overlay Dokploy). Routage : domaine → réseau Docker → service `nginx` port **80** interne.
 
