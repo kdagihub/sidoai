@@ -1,0 +1,9 @@
+# Point d'entrée unique pour Dokploy (un seul champ "Compose Path").
+# Inclut la prod sans Let's Encrypt + l'overlay Nginx HTTP / projet "sido".
+#
+# Nécessite Docker Compose v2.24+ (directive `include`).
+# Compose Path Dokploy : deployment/docker_compose/docker-compose.dokploy-entry.yml
+
+include:
+  - path: docker-compose.prod-no-letsencrypt.yml
+  - path: docker-compose.dokploy.yml

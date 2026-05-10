@@ -38,8 +38,10 @@ Le mode **Onyx Lite**, c’est au **démarrage** de la stack : fichier
 
 ## Dokploy
 
-**Un service « Compose »** avec par ex.  
-`docker-compose.prod-no-letsencrypt.yml` + `docker-compose.dokploy.yml`  
-(+ overlay `docker-compose.onyx-lite.yml` seulement si tu veux Lite au run).
+**Un seul** champ *Compose Path* :  
+`deployment/docker_compose/docker-compose.dokploy-entry.yml`  
+(ce fichier **inclut** déjà `prod-no-letsencrypt` + `dokploy` ; il faut Docker Compose **v2.24+** côté serveur).
+
+Lite au run : ajoute l’overlay `docker-compose.onyx-lite.yml` seulement si tu l’intègres toi-même (Dokploy n’a souvent qu’un seul fichier — dans ce cas on peut fusionner ou documenter un second entry plus tard).
 
 Variables images : voir `deployment/docker_compose/env.template`.
