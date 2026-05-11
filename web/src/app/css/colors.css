@@ -267,11 +267,11 @@
 
 /* Light Colors */
 :root {
-  /* SIDO AI — charte vert / blanc (logo) */
-  --sido-brand-06: #0f5234;
-  --sido-brand-05: #1a8a54;
-  --sido-brand-04: #2db573;
-  --sido-brand-surface: #f2faf6;
+  /* Mona Chat — charte vert / blanc (logo) */
+  --mona-brand-06: #0f5234;
+  --mona-brand-05: #1a8a54;
+  --mona-brand-04: #2db573;
+  --mona-brand-surface: #f2faf6;
 
   /* Shimmer colors for loading animations */
   --shimmer-base: #a3a3a3;
@@ -334,10 +334,10 @@
   --border-inverted-02: var(--grey-60);
   --border-inverted-01: var(--grey-80);
 
-  /* Theme (SIDO AI primary green) */
-  --theme-primary-06: var(--sido-brand-06);
-  --theme-primary-05: var(--sido-brand-05);
-  --theme-primary-04: var(--sido-brand-04);
+  /* Theme (Mona Chat primary green) */
+  --theme-primary-06: var(--mona-brand-06);
+  --theme-primary-05: var(--mona-brand-05);
+  --theme-primary-04: var(--mona-brand-04);
 
   /* Theme / Gradient */
   --theme-gradient-05: var(--tint-50);
@@ -441,7 +441,7 @@
   --action-danger-01: var(--red-05);
 
   /* Action / Text */
-  --action-text-link-05: var(--sido-brand-05);
+  --action-text-link-05: var(--mona-brand-05);
   --action-text-danger-05: var(--red-50);
 
   /* Background / Code */
@@ -481,11 +481,11 @@
 
 /* Dark Colors */
 .dark {
-  /* SIDO AI — tons plus clairs sur fond sombre */
-  --sido-brand-06: #e8fff1;
-  --sido-brand-05: #5ecf9a;
-  --sido-brand-04: #3dab7a;
-  --sido-brand-surface: #0f1915;
+  /* Mona Chat — tons plus clairs sur fond sombre */
+  --mona-brand-06: #e8fff1;
+  --mona-brand-05: #5ecf9a;
+  --mona-brand-04: #3dab7a;
+  --mona-brand-surface: #0f1915;
 
   /* Shimmer colors for loading animations */
   --shimmer-base: #5c5c5c;
@@ -548,10 +548,10 @@
   --border-inverted-02: var(--grey-20);
   --border-inverted-01: var(--grey-10);
 
-  /* Theme (SIDO AI sur fond sombre) */
-  --theme-primary-06: var(--sido-brand-06);
-  --theme-primary-05: var(--sido-brand-05);
-  --theme-primary-04: var(--sido-brand-04);
+  /* Theme (Mona Chat sur fond sombre) */
+  --theme-primary-06: var(--mona-brand-06);
+  --theme-primary-05: var(--mona-brand-05);
+  --theme-primary-04: var(--mona-brand-04);
 
   /* Theme / Gradient */
   --theme-gradient-05: var(--grey-100);
@@ -655,7 +655,7 @@
   --action-danger-01: var(--red-90);
 
   /* Action / Text */
-  --action-text-link-05: var(--sido-brand-05);
+  --action-text-link-05: var(--mona-brand-05);
   --action-text-danger-05: var(--red-45);
 
   /* Background / Code */

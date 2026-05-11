@@ -6,13 +6,14 @@ import {
   DEFAULT_LOGO_SIZE_PX,
   NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED,
 } from "@/lib/constants";
+import {
+  DEFAULT_APP_DISPLAY_NAME,
+  MONA_CHAT_TAGLINE_KO,
+} from "@/lib/branding";
 import { cn } from "@opal/utils";
 import Text from "@/refresh-components/texts/Text";
 import Truncated from "@/refresh-components/texts/Truncated";
 import { useMemo } from "react";
-
-/** Nom affiché par défaut si l’admin EE ne définit pas `application_name`. */
-export const DEFAULT_SIDO_APP_DISPLAY_NAME = "SIDO AI";
 
 export interface LogoProps {
   folded?: boolean;
@@ -20,7 +21,7 @@ export interface LogoProps {
   className?: string;
 }
 
-function SidoLogoMark({
+function MonaLogoMark({
   size,
   className,
 }: {
@@ -28,32 +29,18 @@ function SidoLogoMark({
   className?: string;
 }) {
   return (
-    <>
-      <Image
-        src="/logo_sido.png"
-        alt={DEFAULT_SIDO_APP_DISPLAY_NAME}
-        width={180}
-        height={72}
-        className={cn(
-          "object-contain object-left flex-shrink-0 w-auto dark:hidden",
-          className
-        )}
-        style={{ height: size, width: "auto", maxWidth: "min(200px, 70vw)" }}
-        priority
-      />
-      <Image
-        src="/logo_sido_sf.png"
-        alt={DEFAULT_SIDO_APP_DISPLAY_NAME}
-        width={180}
-        height={72}
-        className={cn(
-          "hidden dark:block object-contain object-left flex-shrink-0 w-auto",
-          className
-        )}
-        style={{ height: size, width: "auto", maxWidth: "min(200px, 70vw)" }}
-        priority
-      />
-    </>
+    <Image
+      src="/mona1.png"
+      alt={DEFAULT_APP_DISPLAY_NAME}
+      width={180}
+      height={72}
+      className={cn(
+        "object-contain object-left flex-shrink-0 w-auto",
+        className
+      )}
+      style={{ height: size, width: "auto", maxWidth: "min(200px, 70vw)" }}
+      priority
+    />
   );
 }
 
@@ -63,7 +50,7 @@ export default function Logo({ folded, size, className }: LogoProps) {
   const logoDisplayStyle = settings.enterpriseSettings?.logo_display_style;
   const rawApplicationName = settings.enterpriseSettings?.application_name?.trim();
   const applicationDisplayName =
-    rawApplicationName || DEFAULT_SIDO_APP_DISPLAY_NAME;
+    rawApplicationName || DEFAULT_APP_DISPLAY_NAME;
 
   const logoBuster = useMemo(
     () => Date.now(),
@@ -87,7 +74,7 @@ export default function Logo({ folded, size, className }: LogoProps) {
       />
     </div>
   ) : (
-    <SidoLogoMark size={resolvedSize} className={className} />
+    <MonaLogoMark size={resolvedSize} className={className} />
   );
 
   const renderNameAndPoweredBy = (opts: {
@@ -109,7 +96,7 @@ export default function Logo({ folded, size, className }: LogoProps) {
                 className={"line-clamp-1 truncate"}
                 nowrap
               >
-                Technologie au service de Monachat
+                {MONA_CHAT_TAGLINE_KO}
               </Text>
             )}
           </div>

@@ -51,9 +51,9 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SIDO AI",
+  title: "MonaChat",
   description:
-    "Plateforme d'intelligence artificielle — technologie associée à Monachat.",
+    "Mona Chat — 나 · 챗스. Plateforme d'intelligence artificielle pour votre activité.",
 };
 
 // force-dynamic prevents Next.js from statically prerendering pages at build

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SidoAuthBranding from "@/components/auth/SidoAuthBranding";
+import MonaChatAuthBranding from "@/components/auth/MonaChatAuthBranding";
 
 export default function AuthFlowContainer({
   children,
@@ -11,16 +11,16 @@ export default function AuthFlowContainer({
   footerContent?: React.ReactNode;
 }) {
   return (
-    <div className="p-4 flex flex-col items-center justify-center min-h-screen bg-[linear-gradient(180deg,var(--grey-00)_0%,var(--sido-brand-surface)_55%,var(--grey-02)_100%)]">
-      <div className="w-full max-w-md flex items-start flex-col bg-background-tint-00 rounded-16 shadow-lg shadow-02 p-6 border border-[color-mix(in_srgb,var(--sido-brand-05)_12%,transparent)]">
-        <SidoAuthBranding />
+    <div className="p-4 flex flex-col items-center justify-center min-h-screen bg-[linear-gradient(180deg,var(--grey-00)_0%,var(--mona-brand-surface)_55%,var(--grey-02)_100%)]">
+      <div className="w-full max-w-md flex items-start flex-col bg-background-tint-00 rounded-16 shadow-lg shadow-02 p-6 border border-[color-mix(in_srgb,var(--mona-brand-05)_12%,transparent)]">
+        <MonaChatAuthBranding />
         <div className="w-full mt-3">{children}</div>
       </div>
       {authState === "login" && (
         <div className="text-sm mt-6 text-center w-full text-text-03 mainUiBody mx-auto">
           {footerContent ?? (
             <>
-              Nouveau sur SIDO AI ?{" "}
+              Nouveau sur MonaChat ?{" "}
               <Link
                 href="/auth/signup"
                 className="text-theme-primary-05 mainUiAction underline underline-offset-2 transition-colors duration-200 hover:text-theme-primary-04"

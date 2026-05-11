@@ -77,7 +77,7 @@ const Page = async (props: {
               {cloud ? "Finaliser votre inscription" : "Créer un compte"}
             </Text>
             <Text as="p" text03>
-              Rejoignez SIDO AI pour Monachat.
+              Rejoignez MonaChat — 나 · 챗스.
             </Text>
           </div>
           {cloud && authUrl && (
