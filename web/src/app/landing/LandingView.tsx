@@ -1,3 +1,4 @@
+import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@opal/components";
@@ -16,10 +17,11 @@ const BODY_TEXT = "#222222";
 const ACCENT_TEXT = "#282F38";
 
 export interface LandingViewProps {
-  homeHref?: string;
+  /** Route typée (Next.js App Router) */
+  homeHref?: Route;
 }
 
-export default function LandingView({ homeHref = "/" }: LandingViewProps) {
+export default function LandingView({ homeHref = "/" as Route }: LandingViewProps) {
   return (
     <div
       className="min-h-screen flex flex-col bg-white antialiased scroll-smooth"
