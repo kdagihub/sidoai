@@ -77,7 +77,7 @@ const Page = async (props: {
               {cloud ? "Finaliser votre inscription" : "Créer un compte"}
             </Text>
             <Text as="p" text03>
-              Rejoignez MonaChat — 나 · 챗스.
+              Rejoignez MonaChat.
             </Text>
           </div>
           {cloud && authUrl && (

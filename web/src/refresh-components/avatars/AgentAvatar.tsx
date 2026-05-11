@@ -2,9 +2,12 @@
 
 import { MinimalPersonaSnapshot } from "@/app/admin/agents/interfaces";
 import { buildAgentAvatarUrl } from "@/app/app/components/files/images/utils";
-import { SvgOnyxLogo } from "@opal/logos";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import { DEFAULT_AVATAR_SIZE_PX, DEFAULT_AGENT_ID } from "@/lib/constants";
+import {
+  DEFAULT_APP_DISPLAY_NAME,
+  MONA_LOGO_PUBLIC_PATH,
+} from "@/lib/branding";
 import CustomAgentAvatar from "@/refresh-components/avatars/CustomAgentAvatar";
 import Image from "next/image";
 
@@ -21,21 +24,36 @@ export default function AgentAvatar({
   const settings = useSettingsContext();
 
   if (agent.id === DEFAULT_AGENT_ID) {
-    return settings.enterpriseSettings?.use_custom_logo ? (
+    if (settings.enterpriseSettings?.use_custom_logo) {
+      return (
+        <div
+          className="aspect-square rounded-full overflow-hidden relative"
+          style={{ height: size, width: size }}
+        >
+          <Image
+            alt="Logo"
+            src="/api/enterprise-settings/logo"
+            fill
+            className="object-cover object-center"
+            sizes={`${size}px`}
+          />
+        </div>
+      );
+    }
+    return (
       <div
-        className="aspect-square rounded-full overflow-hidden relative"
-        style={{ height: size, width: size }}
+        className="relative flex shrink-0 items-center justify-start"
+        style={{ height: size, width: Math.max(size, Math.round(size * 1.35)) }}
       >
         <Image
-          alt="Logo"
-          src="/api/enterprise-settings/logo"
-          fill
-          className="object-cover object-center"
+          src={MONA_LOGO_PUBLIC_PATH}
+          alt={DEFAULT_APP_DISPLAY_NAME}
+          width={120}
+          height={48}
+          className="object-contain object-left h-full w-auto max-h-full"
           sizes={`${size}px`}
         />
       </div>
-    ) : (
-      <SvgOnyxLogo size={size} className="shrink-0" />
     );
   }
 

@@ -2,16 +2,13 @@
 
 import Image from "next/image";
 import { useSettingsContext } from "@/providers/SettingsProvider";
-import {
-  DEFAULT_LOGO_SIZE_PX,
-  NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED,
-} from "@/lib/constants";
+import { DEFAULT_LOGO_SIZE_PX } from "@/lib/constants";
 import {
   DEFAULT_APP_DISPLAY_NAME,
-  MONA_CHAT_TAGLINE_KO,
+  MONA_LOGO_PUBLIC_PATH,
+  sanitizeAppDisplayName,
 } from "@/lib/branding";
 import { cn } from "@opal/utils";
-import Text from "@/refresh-components/texts/Text";
 import Truncated from "@/refresh-components/texts/Truncated";
 import { useMemo } from "react";
 
@@ -30,7 +27,7 @@ function MonaLogoMark({
 }) {
   return (
     <Image
-      src="/mona1.png"
+      src={MONA_LOGO_PUBLIC_PATH}
       alt={DEFAULT_APP_DISPLAY_NAME}
       width={180}
       height={72}
@@ -50,7 +47,7 @@ export default function Logo({ folded, size, className }: LogoProps) {
   const logoDisplayStyle = settings.enterpriseSettings?.logo_display_style;
   const rawApplicationName = settings.enterpriseSettings?.application_name?.trim();
   const applicationDisplayName =
-    rawApplicationName || DEFAULT_APP_DISPLAY_NAME;
+    sanitizeAppDisplayName(rawApplicationName) || DEFAULT_APP_DISPLAY_NAME;
 
   const logoBuster = useMemo(
     () => Date.now(),
@@ -88,16 +85,6 @@ export default function Logo({ folded, size, className }: LogoProps) {
           <div className="flex flex-1 flex-col -mt-0.5">
             {opts.includeName && (
               <Truncated headingH3>{applicationDisplayName}</Truncated>
-            )}
-            {!NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED && (
-              <Text
-                secondaryBody
-                text03
-                className={"line-clamp-1 truncate"}
-                nowrap
-              >
-                {MONA_CHAT_TAGLINE_KO}
-              </Text>
             )}
           </div>
         )}

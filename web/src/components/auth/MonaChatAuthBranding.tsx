@@ -1,15 +1,12 @@
 import Image from "next/image";
-import {
-  DEFAULT_APP_DISPLAY_NAME,
-  MONA_CHAT_TAGLINE_KO,
-} from "@/lib/branding";
+import { DEFAULT_APP_DISPLAY_NAME, MONA_LOGO_PUBLIC_PATH } from "@/lib/branding";
 
-/** Logo et titre Mona Chat (pages login / signup). */
+/** Logo et titre MonaChat (pages login / signup). */
 export default function MonaChatAuthBranding() {
   return (
     <div className="flex w-full flex-col items-center gap-2 mb-1">
       <Image
-        src="/mona1.png"
+        src={MONA_LOGO_PUBLIC_PATH}
         alt={DEFAULT_APP_DISPLAY_NAME}
         width={200}
         height={80}
@@ -18,9 +15,6 @@ export default function MonaChatAuthBranding() {
       />
       <p className="text-center text-text-05 font-semibold text-lg tracking-tight">
         {DEFAULT_APP_DISPLAY_NAME}
-      </p>
-      <p className="text-center text-text-03 text-sm font-medium tracking-wide">
-        {MONA_CHAT_TAGLINE_KO}
       </p>
     </div>
   );

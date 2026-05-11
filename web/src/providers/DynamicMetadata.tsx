@@ -2,14 +2,19 @@
 
 import { useEffect, useMemo } from "react";
 import { useSettingsContext } from "@/providers/SettingsProvider";
-import { DEFAULT_APP_DISPLAY_NAME } from "@/lib/branding";
+import {
+  DEFAULT_APP_DISPLAY_NAME,
+  MONA_LOGO_PUBLIC_PATH,
+  sanitizeAppDisplayName,
+} from "@/lib/branding";
 
 export default function DynamicMetadata() {
   const { enterpriseSettings } = useSettingsContext();
 
   useEffect(() => {
     const title =
-      enterpriseSettings?.application_name?.trim() || DEFAULT_APP_DISPLAY_NAME;
+      sanitizeAppDisplayName(enterpriseSettings?.application_name?.trim()) ||
+      DEFAULT_APP_DISPLAY_NAME;
     if (document.title !== title) {
       document.title = title;
     }
@@ -24,7 +29,7 @@ export default function DynamicMetadata() {
 
   const favicon = enterpriseSettings?.use_custom_logo
     ? `/api/enterprise-settings/logo?v=${cacheBuster}`
-    : "/mona1.png";
+    : MONA_LOGO_PUBLIC_PATH;
 
   return <link rel="icon" href={favicon} />;
 }

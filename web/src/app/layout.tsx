@@ -53,7 +53,7 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "MonaChat",
   description:
-    "Mona Chat — 나 · 챗스. Plateforme d'intelligence artificielle pour votre activité.",
+    "MonaChat — plateforme d'intelligence artificielle pour votre activité.",
 };
 
 // force-dynamic prevents Next.js from statically prerendering pages at build

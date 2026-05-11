@@ -64,7 +64,11 @@ import useAppFocus from "@/hooks/useAppFocus";
 import { useQueryController } from "@/providers/QueryControllerProvider";
 import { usePaidEnterpriseFeaturesEnabled } from "@/components/settings/usePaidEnterpriseFeaturesEnabled";
 import useBrowserInfo from "@/hooks/useBrowserInfo";
-import { APP_SLOGAN } from "@/lib/constants";
+import {
+  APP_FOOTER_CREDIT,
+  DEFAULT_APP_DISPLAY_NAME,
+  DEFAULT_APP_VERSION_LABEL,
+} from "@/lib/branding";
 
 /**
  * App Header Component
@@ -462,11 +466,11 @@ function Footer() {
   const settings = useSettingsContext();
   const appFocus = useAppFocus();
 
+  const version =
+    settings?.webVersion?.trim() || DEFAULT_APP_VERSION_LABEL;
   const customFooterContent =
     settings?.enterpriseSettings?.custom_lower_disclaimer_content ||
-    `[Onyx ${
-      settings?.webVersion || "dev"
-    }](https://www.onyx.app/) - ${APP_SLOGAN}`;
+    `${DEFAULT_APP_DISPLAY_NAME} ${version} - ${APP_FOOTER_CREDIT}`;
 
   return (
     <footer
