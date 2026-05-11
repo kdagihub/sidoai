@@ -18,9 +18,10 @@ const landingHeadline = Libre_Baskerville({
   display: "swap",
 });
 
+/** Pas de graisse 300 côté Next/Google pour Lora — utiliser 400 (léger visuellement avec font-light si besoin). */
 const landingAccent = Lora({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   variable: "--font-landing-accent",
   display: "swap",
 });
