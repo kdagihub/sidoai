@@ -10,6 +10,19 @@ export const DEFAULT_APP_VERSION_LABEL = "0.0.0";
 /** Ligne de crédit sous le pied de page (chat / NRF). */
 export const APP_FOOTER_CREDIT = "Développé par CIACEMS";
 
+/** Site institutionnel CIACEMS (lien externe). */
+export const CIACEMS_SITE_URL = "https://ciacems.net";
+
+/** Contact CIACEMS (landing / footer). `tel` pour les liens, `label` pour l’affichage. */
+export const CIACEMS_PHONES = [
+  { tel: "+2250797969394", label: "+225 07 97 96 93 94" },
+  { tel: "+2250544166309", label: "+225 05 44 16 63 09" },
+] as const;
+export const CIACEMS_EMAIL = "itciacems@gmail.com";
+
+/** Contact commercial / éditorial Mona (Monajent). */
+export const MONAJENT_CONTACT_EMAIL = "info@monajent.com";
+
 /**
  * Retire une accroche coréenne historique si elle est encore présente dans le nom EE (BDD / cache).
  */

@@ -1,10 +1,15 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { MapPin, Shield, Sparkles } from "lucide-react";
 import { Button } from "@opal/components";
 import {
   APP_FOOTER_CREDIT,
+  CIACEMS_EMAIL,
+  CIACEMS_PHONES,
+  CIACEMS_SITE_URL,
   DEFAULT_APP_DISPLAY_NAME,
+  MONAJENT_CONTACT_EMAIL,
   MONA_LOGO_PUBLIC_PATH,
 } from "@/lib/branding";
 import { landingFontClasses } from "@/app/landing/LandingFontsWrapper";
@@ -187,39 +192,71 @@ export default function LandingView({ homeHref = "/" as Route }: LandingViewProp
               avec une infrastructure que vous hébergez ou maîtrisez, sans dépendre
               de serveurs opaques à l’étranger pour vos données sensibles.
             </p>
+            <p
+              className="mx-auto mt-6 max-w-3xl text-center text-[15px] leading-7 sm:text-base sm:leading-8"
+              style={{ color: ACCENT_TEXT }}
+            >
+              La plateforme réunit ce qu’il faut pour travailler avec l’IA au quotidien
+              :{" "}
+              <strong className="font-medium" style={{ color: IVORY_DEEP }}>
+                agents
+              </strong>{" "}
+              conversationnels dédiés,{" "}
+              <strong className="font-medium" style={{ color: IVORY_DEEP }}>
+                recherche augmentée (RAG)
+              </strong>{" "}
+              sur vos sources,{" "}
+              <strong className="font-medium" style={{ color: IVORY_DEEP }}>
+                gestion de documents et d’images
+              </strong>
+              , espaces{" "}
+              <strong className="font-medium" style={{ color: IVORY_DEEP }}>
+                projet
+              </strong>{" "}
+              et orchestration — dans une expérience unique, pensée pour les équipes.
+            </p>
             <ul className="mt-12 grid gap-8 sm:grid-cols-3">
-              {[
-                {
-                  icon: "🌴",
-                  title: "Contexte local",
-                  text: "Une IA pensée pour les équipes et les usages sur le terrain.",
-                },
-                {
-                  icon: "❤️",
-                  title: "Confiance",
-                  text: "Transparence et contrôle sur les flux d’information.",
-                },
-                {
-                  icon: "🎭",
-                  title: "Identité",
-                  text: "Mona incarne votre assistant avec cohérence et fiabilité.",
-                },
-              ].map((item) => (
+              {(
+                [
+                  {
+                    Icon: MapPin,
+                    title: "Contexte local",
+                    text: "Une IA pensée pour les équipes et les usages sur le terrain.",
+                  },
+                  {
+                    Icon: Shield,
+                    title: "Sécurité & confidentialité",
+                    text: "Contrôle d’accès, traçabilité et protection de vos contenus et échanges sensibles.",
+                  },
+                  {
+                    Icon: Sparkles,
+                    title: "Identité",
+                    text: "Mona incarne votre assistant avec cohérence et fiabilité.",
+                  },
+                ] as const
+              ).map(({ Icon, title, text }) => (
                 <li
-                  key={item.title}
+                  key={title}
                   className="flex flex-col items-center rounded-2xl border border-black/5 bg-[#fafdfb] px-6 py-8 text-center shadow-sm"
                 >
-                  <span className="text-4xl" aria-hidden>
-                    {item.icon}
-                  </span>
+                  <div
+                    className="flex h-14 w-14 items-center justify-center rounded-xl border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                    aria-hidden
+                  >
+                    <Icon
+                      className="h-7 w-7"
+                      strokeWidth={1.65}
+                      style={{ color: EMERALD }}
+                    />
+                  </div>
                   <h3
                     className={`${landingFontClasses.headline} mt-4 text-lg font-semibold`}
                     style={{ color: IVORY_DEEP }}
                   >
-                    {item.title}
+                    {title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed" style={{ color: ACCENT_TEXT }}>
-                    {item.text}
+                    {text}
                   </p>
                 </li>
               ))}
@@ -265,7 +302,7 @@ export default function LandingView({ homeHref = "/" as Route }: LandingViewProp
                 {
                   kicker: "Performance",
                   title: "Réactivité locale",
-                  body: "Fork optimisé à partir d’Onyx : recherche, agents et chat qui répondent vite, là où vous déployez.",
+                  body: "Moteur optimisé pour la recherche augmentée, les agents et le chat — des réponses rapides là où vous déployez votre stack.",
                   accent: EMERALD,
                 },
               ].map((card) => (
@@ -380,7 +417,42 @@ export default function LandingView({ homeHref = "/" as Route }: LandingViewProp
         <p className="font-medium text-white">
           {DEFAULT_APP_DISPLAY_NAME} — {APP_FOOTER_CREDIT}
         </p>
-        <nav className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2">
+        <div className="mx-auto mt-4 max-w-lg space-y-1 text-xs leading-relaxed text-white/85">
+          <p>
+            <span className="font-medium text-white/95">Contact CIACEMS</span>
+            {" — "}
+            {CIACEMS_PHONES.map((phone, i) => (
+              <span key={phone.tel}>
+                {i > 0 ? " · " : null}
+                <a
+                  href={`tel:${phone.tel}`}
+                  className="underline underline-offset-2 hover:text-white"
+                >
+                  {phone.label}
+                </a>
+              </span>
+            ))}
+          </p>
+          <p>
+            <a
+              href={`mailto:${CIACEMS_EMAIL}`}
+              className="underline underline-offset-2 hover:text-white"
+            >
+              {CIACEMS_EMAIL}
+            </a>
+          </p>
+          <p>
+            <span className="font-medium text-white/95">Monajent</span>
+            {" — "}
+            <a
+              href={`mailto:${MONAJENT_CONTACT_EMAIL}`}
+              className="underline underline-offset-2 hover:text-white"
+            >
+              {MONAJENT_CONTACT_EMAIL}
+            </a>
+          </p>
+        </div>
+        <nav className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2">
           <Link href="/auth/login" className="underline underline-offset-2 hover:text-white">
             Connexion
           </Link>
@@ -395,6 +467,18 @@ export default function LandingView({ homeHref = "/" as Route }: LandingViewProp
             Confidentialité
           </a>
         </nav>
+        <p className="mt-4 text-xs text-white/75">
+          <span className="font-medium text-white/90">CIACEMS</span>
+          {" — "}
+          <a
+            href={CIACEMS_SITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-white"
+          >
+            ciacems.net
+          </a>
+        </p>
       </footer>
     </div>
   );
