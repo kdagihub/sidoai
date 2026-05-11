@@ -87,22 +87,16 @@ export default function LandingPage() {
                 unique, pensée pour la productivité et la confiance.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
-                <Button
-                  href="/auth/signup"
-                  prominence="primary"
-                  size="lg"
-                  className="sm:min-w-[12rem]"
-                >
-                  Essayer gratuitement
-                </Button>
-                <Button
-                  href="/auth/login"
-                  prominence="secondary"
-                  size="lg"
-                  className="sm:min-w-[12rem]"
-                >
-                  J’ai déjà un compte
-                </Button>
+                <div className="sm:min-w-[12rem]">
+                  <Button href="/auth/signup" prominence="primary" size="lg">
+                    Essayer gratuitement
+                  </Button>
+                </div>
+                <div className="sm:min-w-[12rem]">
+                  <Button href="/auth/login" prominence="secondary" size="lg">
+                    J’ai déjà un compte
+                  </Button>
+                </div>
               </div>
               <p className="mt-6 text-sm text-text-03">
                 Aucune carte bancaire requise pour démarrer — créez un compte et
