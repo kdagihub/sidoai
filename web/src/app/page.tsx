@@ -1,5 +1,11 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { getCurrentUserSS } from "@/lib/userSS";
+import LandingView from "@/app/landing/LandingView";
+import LandingFontsWrapper from "@/app/landing/LandingFontsWrapper";
+import { landingMetadata } from "@/app/landing/landingMetadata";
+
+export const metadata: Metadata = landingMetadata;
 
 export default async function Page() {
   try {
@@ -8,7 +14,11 @@ export default async function Page() {
       redirect("/app");
     }
   } catch {
-    // Backend indisponible : on affiche quand même la landing plutôt qu’un échec dur.
+    // Backend indisponible : afficher la landing (pas de redirect vers /landing).
   }
-  redirect("/landing");
+  return (
+    <LandingFontsWrapper>
+      <LandingView homeHref="/" />
+    </LandingFontsWrapper>
+  );
 }
