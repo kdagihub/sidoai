@@ -1,0 +1,10 @@
+# Référence locale / CI : `include` fusionne prod + overlay (Compose v2.24+).
+#
+# Dokploy : le validateur « Domain » n’analyse pas les fichiers inclus → erreur
+# « service nginx does not exist ». Utiliser à la place :
+#   docker-compose.dokploy-deploy.yml
+# (fichier fusionné statique, même stack).
+
+include:
+  - path: docker-compose.prod-no-letsencrypt.yml
+  - path: docker-compose.dokploy.yml

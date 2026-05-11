@@ -1,0 +1,18 @@
+# Overlay pour déploiement derrière Dokploy/Traefik (TLS terminé par le proxy).
+# Usage depuis ce répertoire :
+#   docker compose -f docker-compose.prod-no-letsencrypt.yml -f docker-compose.dokploy.yml up -d
+#
+# - Nginx : pas de publication sur le port 80 de l’hôte (Traefik l’utilise déjà) ; routage vers nginx:80 sur le réseau Docker.
+# - Template HTTP-only (pas de certificats dans le conteneur).
+# - Project name : sido (visible dans les noms de conteneurs/volumes).
+
+name: sido
+
+services:
+  nginx:
+    command: >
+      /bin/sh -c "rm -f /etc/nginx/conf.d/default.conf
+      && cp -a /nginx-templates/. /etc/nginx/conf.d/
+      && sed 's/\r$//' /etc/nginx/conf.d/run-nginx.sh > /tmp/run-nginx.sh
+      && chmod +x /tmp/run-nginx.sh
+      && /tmp/run-nginx.sh app.conf.template.http-only"
